@@ -32,13 +32,11 @@ ENDPOINTS = {
 
 def log(message: str):
     """
-    Protokolliert eine Nachricht mit Zeitstempel in eine Log-Datei und auf der Konsole.
+    Protokolliert eine Nachricht mit Zeitstempel auf der Konsole.
     """
     timestamp = datetime.now().strftime("%d.%m.%y-%H:%M")
-    line = f"[{timestamp}] {message}\n"
-    with open(LOG_FILE, 'a', encoding='utf-8') as f:
-        f.write(line)
-    print(line, end='')
+    line = f"[{timestamp}] {message}"
+    print(line)
 
 
 def setup_session():

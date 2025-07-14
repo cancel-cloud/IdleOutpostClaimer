@@ -18,5 +18,8 @@ RUN apt-get update && apt-get -y install cron
 COPY entrypoint.sh /usr/local/bin/
 RUN chmod +x /usr/local/bin/entrypoint.sh
 
+# Definiere einen Volume für die Logs
+VOLUME /var/log
+
 # Definiere den Startpunkt des Containers
 ENTRYPOINT ["entrypoint.sh"] 
