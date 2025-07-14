@@ -14,5 +14,8 @@ chmod 0644 /etc/cron.d/claim-cron
 # Erstelle die Log-Datei, damit wir sie mit 'tail' verfolgen können
 touch /var/log/cron.log
 
+# Zeige die Start-Nachricht an
+/usr/local/bin/python /app/app.py --status >> /var/log/cron.log 2>&1
+
 # Starte den Cron-Dienst im Hintergrund und zeige die Logs im Vordergrund an
 cron && tail -f /var/log/cron.log 

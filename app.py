@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
 import requests
 import os
-from datetime import datetime
+from datetime import datetime, timedelta
+import sys
 
 # Basis-URLs
 env_name = 'idleoutpostclaimer'
@@ -79,13 +80,32 @@ def claim(session, key: str):
         log(f"   Server-Antwort: {resp.text}")
 
 
+def show_startup_message():
+    now = datetime.now()
+    # Cron is set to 02:00
+    next_run = now.replace(hour=2, minute=0, second=0, microsecond=0)
+    if now.hour >= 2:
+        next_run += timedelta(days=1)
+
+    time_diff = next_run - now
+    hours, remainder = divmod(time_diff.seconds, 3600)
+    minutes, _ = divmod(remainder, 60)
+
+    log("🚀 Idle Outpost Claimer gestartet.")
+    log(f"Nächster automatischer Claim um {next_run.strftime('%H:%M')}. Das ist in {hours} Stunden und {minutes} Minuten.")
+
+
 if __name__ == '__main__':
+    if len(sys.argv) > 1 and sys.argv[1] == '--status':
+        show_startup_message()
+        exit(0)
+
     if not USER_GAME_ID:
         print("Fehler: Die Umgebungsvariable USER_GAME_ID wurde nicht gesetzt.")
         print("Bitte setze sie und starte den Container neu.")
         exit(1)
 
-    log("🚀 Starte Idle Outpost Claimer")
+    log("⚙️  Führe planmäßigen Claim aus...")
     # Session initialisieren
     sess = setup_session()
 
