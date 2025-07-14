@@ -11,8 +11,12 @@ RUN pip install --no-cache-dir -r requirements.txt
 # Kopiere den Rest der Anwendung in das Arbeitsverzeichnis
 COPY . .
 
-# Setze die Umgebungsvariable für die Log-Datei, falls nötig
-ENV LOG_FILE=claim_rewards.log
+# Installiere cron
+RUN apt-get update && apt-get -y install cron
 
-# Definiere den Befehl, der beim Starten des Containers ausgeführt wird
-CMD ["python3", "app.py"] 
+# Kopiere das Entrypoint-Skript und mache es ausführbar
+COPY entrypoint.sh /usr/local/bin/
+RUN chmod +x /usr/local/bin/entrypoint.sh
+
+# Definiere den Startpunkt des Containers
+ENTRYPOINT ["entrypoint.sh"] 
