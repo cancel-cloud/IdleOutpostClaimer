@@ -1,0 +1,17 @@
+version: '3.8'
+
+services:
+  idle-outpost-claimer:
+    image: ghcr.io/cancel-cloud/idleoutpostclaimer:latest
+    container_name: idle-outpost-claimer
+    restart: unless-stopped
+    environment:
+      # Dieser Wert muss in der Portainer UI oder in einer .env-Datei gesetzt werden
+      - USER_GAME_ID=${USER_GAME_ID}
+    volumes:
+      # Persistiert die Log-Dateien in einem benannten Volume
+      - idle-outpost-logs:/var/log
+
+volumes:
+  idle-outpost-logs:
+    driver: local 

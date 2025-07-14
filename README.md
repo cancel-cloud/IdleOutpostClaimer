@@ -70,3 +70,54 @@ docker run --name idle-outpost-claimer -d \
 ```
 
 Die Log-Datei (`cron.log`) befindet sich nun in deinem `~/idle-outpost-logs` Ordner und wird kontinuierlich aktualisiert.
+
+## 🐳 Deployment mit Docker Compose & Portainer
+
+Für eine robustere Verwaltung, insbesondere auf einem Server, empfiehlt sich die Verwendung von `docker-compose.yml` und Portainer.
+
+### Portainer-Stack-Deployment (Empfohlen)
+
+Mit dieser Methode kannst du den Claimer direkt aus meinem Git-Repository in Portainer benutzen.
+
+1.  **Gehe zu Stacks** in Portainer und klicke auf **+ Add stack**.
+2.  **Vergib einen Namen**, z.B. `idle-outpost-claimer`.
+3.  **Wähle "Git Repository"** als Build-Methode.
+    - **Repository URL**: Gib die URL zu deinem GitHub-Repository an.
+    - **Compose path**: `docker-compose.yml`
+4.  **Aktiviere "Automatic updates"**:
+    - Schalte die Option **"Webhook"** an. Portainer generiert nun eine Webhook-URL. Kopiere diese – du brauchst sie für den nächsten Schritt.
+5.  **Setze die Umgebungsvariable**:
+    - Scrolle zum Abschnitt **"Environment variables"**.
+    - Klicke auf **+ Add environment variable**.
+    - **Name**: `USER_GAME_ID`, **Value**: `DEINE_USER_GAME_ID_HIER`.
+6.  **Klicke auf "Deploy the stack"**. Portainer lädt das Image und startet den Container.
+
+### Automatische Updates via GitHub Actions
+
+Damit Portainer automatisch die neueste Version deines Images zieht, wenn du Änderungen pushst, kannst du den Webhook in einer GitHub Action aufrufen.
+
+1.  **GitHub Secret erstellen**:
+    - Gehe in deinem GitHub-Repo zu **Settings > Secrets and variables > Actions**.
+    - Erstelle ein neues Secret mit dem Namen `PORTAINER_WEBHOOK_URL` und füge die kopierte URL aus Portainer ein.
+2.  **GitHub Action anlegen**:
+    - Erstelle eine Datei unter `.github/workflows/deploy.yml` in deinem Repository. Diese Action baut bei jedem Push auf den `main`-Branch ein neues Docker-Image, pusht es auf die GitHub Container Registry und ruft anschließend den Portainer-Webhook auf, um den Stack zu aktualisieren.
+
+    *Hinweis: Ein passendes Workflow-Beispiel, das du als Vorlage nutzen kannst, müsstest du noch erstellen. Der entscheidende letzte Schritt in der Action wäre dieser:*
+    ```yaml
+    - name: Trigger Portainer Webhook
+      run: curl -X POST ${{ secrets.PORTAINER_WEBHOOK_URL }}
+    ```
+
+### Manuelles Deployment mit Docker Compose
+
+Falls du Portainer nicht nutzt, kannst du den Stack auch manuell starten.
+
+1.  Erstelle eine Datei namens `.env` im selben Verzeichnis wie die `docker-compose.yml`.
+2.  Füge den folgenden Inhalt in die `.env`-Datei ein und ersetze den Platzhalter:
+    ```
+    USER_GAME_ID=DEINE_USER_GAME_ID_HIER
+    ```
+3.  Starte den Stack im Hintergrund:
+    ```bash
+    docker-compose up -d
+    ```
