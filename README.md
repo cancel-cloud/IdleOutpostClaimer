@@ -36,7 +36,7 @@ Deine persönliche Game-ID ist notwendig, damit das Tool die Belohnungen für de
 **Ersetze `DEINE_USER_GAME_ID_HIER` mit der ID, die du in Schritt 2 kopiert hast.**
 
 ```bash
-docker run -e USER_GAME_ID=DEINE_USER_GAME_ID_HIER ghcr.io/dein-github-username/idleoutpostclaimer:latest
+docker run -e USER_GAME_ID=DEINE_USER_GAME_ID_HIER ghcr.io/cancel-cloud/idleoutpostclaimer:latest
 ```
 
 **Beispiel:**
@@ -44,7 +44,7 @@ docker run -e USER_GAME_ID=DEINE_USER_GAME_ID_HIER ghcr.io/dein-github-username/
 Wenn deine ID `cm123xyz` lautet, sieht der Befehl so aus:
 
 ```bash
-docker run -e USER_GAME_ID=cm123xyz ghcr.io/dein-github-username/idleoutpostclaimer:latest
+docker run -e USER_GAME_ID=cm123xyz ghcr.io/cancel-cloud/idleoutpostclaimer:latest
 ```
 
 Das war's schon! Der Container startet, holt die Belohnungen ab und beendet sich dann von selbst. Du kannst diesen Befehl einmal täglich ausführen, um immer alle Belohnungen zu erhalten.
