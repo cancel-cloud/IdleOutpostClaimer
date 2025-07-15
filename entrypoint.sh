@@ -1,21 +1,24 @@
 #!/bin/bash
 set -e
 
-# Schreibe die Umgebungsvariable in eine Datei, damit cron sie laden kann
-printenv | grep USER_GAME_ID > /etc/environment
+# Optional: Zeitzone setzen
+if [ -n "$TZ" ]; then
+  ln -snf "/usr/share/zoneinfo/$TZ" /etc/localtime
+  echo "$TZ" > /etc/timezone
+fi
 
-# Richte den Cron-Job ein
-# Führt das Skript jeden Tag um 02:00 Uhr aus
-echo "0 2 * * * /usr/local/bin/python /app/app.py >> /var/log/cron.log 2>&1" > /etc/cron.d/claim-cron
+# Cron-Job samt Umgebungsvariable konfigurieren
+{
+  echo "USER_GAME_ID=$USER_GAME_ID"
+  echo "0 2 * * * root /usr/local/bin/python /app/app.py >> /var/log/cron.log 2>&1"
+} > /etc/cron.d/claim-cron
 
-# Setze die richtigen Berechtigungen
+# Rechte setzen und Log-Datei anlegen
 chmod 0644 /etc/cron.d/claim-cron
-
-# Erstelle die Log-Datei, damit wir sie mit 'tail' verfolgen können
 touch /var/log/cron.log
 
-# Zeige die Start-Nachricht an
+# Startmeldung schreiben
 /usr/local/bin/python /app/app.py --status >> /var/log/cron.log 2>&1
 
-# Starte den Cron-Dienst im Hintergrund und zeige die Logs im Vordergrund an
-cron && tail -f /var/log/cron.log 
+# Cron starten und Logs ausgeben
+cron && tail -f /var/log/cron.log

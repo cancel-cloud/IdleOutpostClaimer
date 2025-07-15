@@ -8,6 +8,8 @@ services:
     environment:
       # Dieser Wert muss in der Portainer UI oder in einer .env-Datei gesetzt werden
       - USER_GAME_ID=${USER_GAME_ID}
+      # Optional: setzt die Zeitzone des Containers
+      - TZ=${TZ}
     volumes:
       # Persistiert die Log-Dateien in einem benannten Volume
       - idle-outpost-logs:/var/log
