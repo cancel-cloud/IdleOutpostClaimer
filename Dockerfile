@@ -12,6 +12,7 @@ RUN pip install --no-cache-dir -r requirements.txt
 COPY . .
 
 # Installiere cron
+ENV DEBIAN_FRONTEND=noninteractive
 RUN apt-get update && apt-get -y install cron tzdata && rm -rf /var/lib/apt/lists/*
 
 # Kopiere das Entrypoint-Skript und mache es ausführbar
