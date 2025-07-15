@@ -2,9 +2,11 @@
 set -e
 
 # Optional: Zeitzone setzen
-if [ -n "$TZ" ]; then
+if [ -n "$TZ" ] && [ -f "/usr/share/zoneinfo/$TZ" ]; then
   ln -snf "/usr/share/zoneinfo/$TZ" /etc/localtime
   echo "$TZ" > /etc/timezone
+else
+  echo "Invalid timezone: $TZ. Skipping timezone configuration." >&2
 fi
 
 # Cron-Job samt Umgebungsvariable konfigurieren
