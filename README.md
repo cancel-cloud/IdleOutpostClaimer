@@ -40,7 +40,9 @@ docker run --name idle-outpost-claimer -d \
   ghcr.io/cancel-cloud/idleoutpostclaimer:latest
 ```
 
-Das war's! Der Container läuft nun im Hintergrund (`-d` Flag) und führt den Claim-Prozess täglich um 02:00 Uhr nachts aus.
+Das war's! Der Container läuft nun im Hintergrund (`-d` Flag) und führt den Claim-Prozess täglich um 02:00 Uhr aus.
+Die Zeit bezieht sich standardmäßig auf die UTC-Zeitzone. 
+Möchtest du eine andere Zone verwenden, kannst du die Umgebungsvariable `TZ` setzen (z.B. `-e TZ=Europe/Berlin`).
 
 ## 🪵 Logs einsehen
 
