@@ -18,7 +18,7 @@ def get_timezone():
     try:
         return ZoneInfo(tz_str)
     except ZoneInfoNotFoundError:
-        print(f"Warnung: Zeitzone '{tz_str}' nicht gefunden. Fallback auf UTC.")
+        log(f"Warnung: Zeitzone '{tz_str}' nicht gefunden. Fallback auf UTC.")
         return ZoneInfo("UTC")
 
 TIMEZONE = get_timezone()
