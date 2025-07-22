@@ -2,7 +2,7 @@ version: '3.8'
 
 services:
   idle-outpost-claimer:
-    image: ghcr.io/cancel-cloud/idleoutpostclaimer:main
+    image: ghcr.io/cancel-cloud/idleoutpostclaimer:latest
     container_name: idle-outpost-claimer
     restart: unless-stopped
     environment:
