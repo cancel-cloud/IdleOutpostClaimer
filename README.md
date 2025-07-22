@@ -6,6 +6,7 @@ Dein persönlicher Assistent, der nie schläft! Dieses Tool meldet sich täglich
   <img src="https://img.shields.io/github/downloads/cancel-cloud/IdleOutpostClaimer/total?logo=github&style=for-the-badge&label=Forks" alt="GitHub Forks"/>
   <img src="https://img.shields.io/github/license/cancel-cloud/IdleOutpostClaimer?style=for-the-badge" alt="License"/>
   <img src="https://img.shields.io/github/last-commit/cancel-cloud/IdleOutpostClaimer?style=for-the-badge&logo=github" alt="Last Commit"/>
+  <img src="https://img.shields.io/github/v/release/cancel-cloud/IdleOutpostClaimer?style=for-the-badge" alt="Latest Release"/>
 </div>
 
 ---
@@ -30,6 +31,33 @@ Sind wir ehrlich: Tägliche Anmeldeboni sind super, aber man vergisst sie leicht
 - **📦 Docker-isoliert**: Läuft in einem sauberen, abgeschotteten Container. "Set it and forget it!"
 - **⚙️ Minimale Konfiguration**: Alles, was du brauchst, ist deine `USER_GAME_ID`.
 - **📝 Detailliertes Logging**: Jede Aktion wird protokolliert. Du hast volle Kontrolle und Transparenz.
+- **🔄 Automatische Versionierung**: Das System erstellt automatisch neue Releases und aktualisiert Versionsnummern bei jeder Aktualisierung.
+- **📊 Versionsverfolgung**: Jeder Log-Eintrag zeigt die aktuelle Version an, sodass du immer weißt, welche Version läuft.
+
+---
+
+## 📋 Versionierung & Releases
+
+Das Projekt verwendet ein automatisches Versionierungssystem:
+
+- **🏷️ Automatische Releases**: Bei jedem Push oder Merge in den `main`-Branch wird automatisch eine neue Version erstellt
+- **📈 Patch-Versionierung**: Versionen werden automatisch hochgezählt (z.B. 1.0.4 → 1.0.5 → 1.0.6)
+- **📝 Changelog**: Jedes Release enthält eine Liste der Änderungen seit der letzten Version
+- **🐳 Docker Tags**: Docker Images werden automatisch mit der aktuellen Versionsnummer getaggt
+- **📊 Logs mit Version**: Die Anwendung zeigt die aktuelle Version in allen Log-Ausgaben an
+
+### Aktuelle Version anzeigen
+
+Die aktuelle Version wird beim Start der Anwendung angezeigt:
+```
+[22.07.25-20:37] 🚀 Idle Outpost Claimer v1.0.4 gestartet.
+[22.07.25-20:37] ⚙️  Idle Outpost Claimer v1.0.4 - Führe planmäßigen Claim aus...
+```
+
+Du kannst auch die Version direkt abfragen:
+```bash
+docker exec idle-outpost-claimer python3 -c "from version import get_version; print(f'Version: {get_version()}')"
+```
 
 ---
 
