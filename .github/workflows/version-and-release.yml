@@ -91,6 +91,7 @@ jobs:
           git config --local user.name "GitHub Action"
           git add version.py
           git commit -m "Bump version to v${{ steps.new_version.outputs.new_version }}" || echo "No changes to commit"
+          git pull --rebase origin main
           git push
 
       - name: Create Git Tag
