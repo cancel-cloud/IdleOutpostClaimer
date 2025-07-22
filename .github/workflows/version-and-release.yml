@@ -3,13 +3,9 @@ name: Auto Version and Release
 on:
   push:
     branches: [ "main" ]
-  pull_request:
-    types: [ closed ]
-    branches: [ "main" ]
 
 jobs:
   version-and-release:
-    if: github.event_name == 'push' || (github.event.pull_request.merged == true && github.event.pull_request.base.ref == 'main')
     runs-on: ubuntu-latest
     permissions:
       contents: write
