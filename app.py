@@ -4,6 +4,7 @@ import os
 from datetime import datetime, timedelta
 import sys
 from zoneinfo import ZoneInfo, ZoneInfoNotFoundError
+from version import get_version
 
 
 # Basis-URLs
@@ -103,7 +104,7 @@ def show_startup_message():
     hours, remainder = divmod(time_diff.seconds, 3600)
     minutes, _ = divmod(remainder, 60)
 
-    log("🚀 Idle Outpost Claimer gestartet.")
+    log(f"🚀 Idle Outpost Claimer v{get_version()} gestartet.")
     log(f"Nächster automatischer Claim um {next_run.strftime('%H:%M')}. Das ist in {hours} Stunden und {minutes} Minuten.")
 
 
@@ -117,7 +118,7 @@ if __name__ == '__main__':
         print("Bitte setze sie und starte den Container neu.")
         exit(1)
 
-    log("⚙️  Führe planmäßigen Claim aus...")
+    log(f"⚙️  Idle Outpost Claimer v{get_version()} - Führe planmäßigen Claim aus...")
     # Session initialisieren
     sess = setup_session()
 
