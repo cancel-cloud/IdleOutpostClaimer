@@ -118,7 +118,7 @@ if __name__ == '__main__':
         print("Bitte setze sie und starte den Container neu.")
         exit(1)
 
-    log(f"⚙️  Idle Outpost Claimer v{get_version()} - Führe planmäßigen Claim aus...")
+    log("⚙️  Führe planmäßigen Claim aus...")
     # Session initialisieren
     sess = setup_session()
 
