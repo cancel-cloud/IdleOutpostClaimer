@@ -4,7 +4,12 @@ import os
 from datetime import datetime, timedelta
 import sys
 from zoneinfo import ZoneInfo, ZoneInfoNotFoundError
-from version import get_version
+try:
+    from version import get_version
+except ImportError as e:
+    print(f"Warning: Could not import version module: {e}")
+    def get_version():
+        return "unknown"
 
 
 # Basis-URLs
@@ -104,7 +109,16 @@ def show_startup_message():
     hours, remainder = divmod(time_diff.seconds, 3600)
     minutes, _ = divmod(remainder, 60)
 
-    log(f"🚀 Idle Outpost Claimer v{get_version()} gestartet.")
+    # Get version with error handling
+    try:
+        version = get_version()
+        if version and version.strip():
+            log(f"🚀 Idle Outpost Claimer v{version} gestartet.")
+        else:
+            log("🚀 Idle Outpost Claimer v[version unavailable] gestartet.")
+    except Exception as e:
+        log(f"🚀 Idle Outpost Claimer v[error: {e}] gestartet.")
+    
     log(f"Nächster automatischer Claim um {next_run.strftime('%H:%M')}. Das ist in {hours} Stunden und {minutes} Minuten.")
 
 
