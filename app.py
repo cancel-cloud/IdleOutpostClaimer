@@ -3,12 +3,25 @@ import requests
 import os
 from datetime import datetime, timedelta
 import sys
+from zoneinfo import ZoneInfo, ZoneInfoNotFoundError
+
 
 # Basis-URLs
 env_name = 'idleoutpostclaimer'
 BASE_STORE = 'https://store.xsolla.com'
 USERID_SERVICE = 'https://sb-user-id-service.xsolla.com/api/v1/user-id'
 LOG_FILE = 'claim_rewards.log'
+
+# Zeitzone konfigurieren
+def get_timezone():
+    tz_str = os.environ.get('TZ', 'Europe/Berlin')
+    try:
+        return ZoneInfo(tz_str)
+    except ZoneInfoNotFoundError:
+        log(f"Warnung: Zeitzone '{tz_str}' nicht gefunden. Fallback auf UTC.")
+        return ZoneInfo("UTC")
+
+TIMEZONE = get_timezone()
 
 # Konfiguriere hier deine Game-ID
 USER_GAME_ID = os.environ.get('USER_GAME_ID')
@@ -26,7 +39,8 @@ USER_ID_PAYLOAD = {
 ENDPOINTS = {
     'shovels': '/api/v2/project/256000/free/item/com.rockbite.zombieoutpost.webshop.dailyshovels',
     'tickets': '/api/v2/project/256000/free/item/com.rockbite.zombieoutpost.webshop.dailyadtickets',
-    'legendary': '/api/v2/project/256000/free/item/com.rockbite.zombieoutpost.webshop.weeklylegendarychest'
+    'legendary': '/api/v2/project/256000/free/item/com.rockbite.zombieoutpost.webshop.weeklylegendarychest',
+    'weekly': '/api/v2/project/256000/free/item/com.rockbite.zombieoutpost.webshop.weeklybonus2'
 }
 
 
@@ -34,7 +48,7 @@ def log(message: str):
     """
     Protokolliert eine Nachricht mit Zeitstempel auf der Konsole.
     """
-    timestamp = datetime.now().strftime("%d.%m.%y-%H:%M")
+    timestamp = datetime.now(TIMEZONE).strftime("%d.%m.%y-%H:%M")
     line = f"[{timestamp}] {message}"
     print(line)
 
@@ -79,7 +93,7 @@ def claim(session, key: str):
 
 
 def show_startup_message():
-    now = datetime.now()
+    now = datetime.now(TIMEZONE)
     # Cron is set to 02:00
     next_run = now.replace(hour=2, minute=0, second=0, microsecond=0)
     if now.hour >= 2:
@@ -113,5 +127,6 @@ if __name__ == '__main__':
 
     log("\n--- Wöchentliche Belohnungen ---")
     claim(sess, 'legendary')
+    claim(sess, 'weekly')
 
     log("\n🏁 Alle Aktionen abgeschlossen.")
