@@ -4,7 +4,7 @@ Version management for IdleOutpostClaimer
 """
 
 # Current version of the application
-__version__ = "1.0.9"
+__version__ = "1.0.10"
 
 def get_version():
     """
