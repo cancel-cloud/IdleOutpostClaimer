@@ -63,12 +63,34 @@ jobs:
             COMMITS=$(git log --oneline --pretty=format:"- %s" $LATEST_TAG..HEAD)
           fi
           
-          # Create changelog
+          # Function to enhance commit messages with GitHub links
+          enhance_commit_message() {
+            local line="$1"
+            local repo_url="https://github.com/${{ github.repository }}"
+            
+            # Replace "Merge pull request #123" with links to PRs
+            line=$(echo "$line" | sed -E 's/Merge pull request #([0-9]+)/Merge pull request [#\1]('${repo_url//\//\\\/}'\/pull\/\1)/g')
+            
+            # Replace "Fix #123" or "Fixes #123" with links to issues
+            line=$(echo "$line" | sed -E 's/(Fix|Fixes) #([0-9]+)/\1 [#\2]('${repo_url//\//\\\/}'\/issues\/\2)/g')
+            
+            # Replace standalone "#123" with links to issues (using word boundaries)
+            line=$(echo "$line" | sed -E 's/([[:space:]]|^)#([0-9]+)([[:space:]]|[[:punct:]]|$)/\1[#\2]('${repo_url//\//\\\/}'\/issues\/\2)\3/g')
+            
+            echo "$line"
+          }
+          
+          # Create changelog with enhanced commit messages
           {
             echo "## Changes in v${{ steps.new_version.outputs.new_version }}"
             echo ""
             if [ -n "$COMMITS" ]; then
-              echo "$COMMITS"
+              # Process each commit message to add GitHub links
+              echo "$COMMITS" | while IFS= read -r commit_line; do
+                if [ -n "$commit_line" ]; then
+                  enhance_commit_message "$commit_line"
+                fi
+              done
             else
               echo "- Minor updates and improvements"
             fi
