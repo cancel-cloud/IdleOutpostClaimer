@@ -46,7 +46,7 @@ ENDPOINTS = {
     'shovels': '/api/v2/project/256000/free/item/com.rockbite.zombieoutpost.webshop.dailyshovels',
     'tickets': '/api/v2/project/256000/free/item/com.rockbite.zombieoutpost.webshop.dailyadtickets',
     'legendary': '/api/v2/project/256000/free/item/com.rockbite.zombieoutpost.webshop.weeklylegendarychest',
-    'weekly': '/api/v2/project/256000/free/item/com.rockbite.zombieoutpost.webshop.weeklybonus2'
+    'weekly': '/api/v2/project/256000/free/item/com.rockbite.zombieoutpost.webshop.weeklybonus1'
 }
 
 
