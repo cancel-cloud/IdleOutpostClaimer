@@ -29,20 +29,28 @@ jobs:
           VERSION=$(python3 -c "from version import get_version; print(get_version())")
           echo "current_version=$VERSION" >> $GITHUB_OUTPUT
           echo "Current version: $VERSION"
+          PREVIOUS_VERSION=$(git show HEAD^:version.py 2>/dev/null | python3 -c 'import re, sys; match = re.search(r"__version__ = \"([^\"]+)\"", sys.stdin.read()); print(match.group(1) if match else "")' || true)
+          echo "previous_version=$PREVIOUS_VERSION" >> $GITHUB_OUTPUT
+          echo "Previous version: $PREVIOUS_VERSION"
 
-      - name: Increment version
+      - name: Determine release version
         id: new_version
         run: |
-          # Get the current version and increment patch number
           CURRENT_VERSION="${{ steps.current_version.outputs.current_version }}"
-          IFS='.' read -ra VERSION_PARTS <<< "$CURRENT_VERSION"
-          MAJOR=${VERSION_PARTS[0]}
-          MINOR=${VERSION_PARTS[1]}
-          PATCH=${VERSION_PARTS[2]}
-          NEW_PATCH=$((PATCH + 1))
-          NEW_VERSION="$MAJOR.$MINOR.$NEW_PATCH"
+          PREVIOUS_VERSION="${{ steps.current_version.outputs.previous_version }}"
+          if [ -n "$PREVIOUS_VERSION" ] && [ "$CURRENT_VERSION" != "$PREVIOUS_VERSION" ]; then
+            NEW_VERSION="$CURRENT_VERSION"
+            echo "Using manually bumped version: $NEW_VERSION"
+          else
+            IFS='.' read -ra VERSION_PARTS <<< "$CURRENT_VERSION"
+            MAJOR=${VERSION_PARTS[0]}
+            MINOR=${VERSION_PARTS[1]}
+            PATCH=${VERSION_PARTS[2]}
+            NEW_PATCH=$((PATCH + 1))
+            NEW_VERSION="$MAJOR.$MINOR.$NEW_PATCH"
+            echo "Auto-incremented version: $NEW_VERSION"
+          fi
           echo "new_version=$NEW_VERSION" >> $GITHUB_OUTPUT
-          echo "New version: $NEW_VERSION"
           
       - name: Update version in code
         run: |

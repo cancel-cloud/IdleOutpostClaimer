@@ -28,6 +28,7 @@ Sind wir ehrlich: Tägliche Anmeldeboni sind super, aber man vergisst sie leicht
   - **Täglich**: 💎 Schaufeln (`Shovels`)
   - **Täglich**: 🎟️ Werbe-Tickets (`Ad Tickets`)
   - **Wöchentlich**: 👑 Legendäre Kiste (`Legendary Chest`)
+  - **Wöchentlich**: 💎 100 kostenlose Gems (`100 Free Gems`)
 - **📦 Docker-isoliert**: Läuft in einem sauberen, abgeschotteten Container. "Set it and forget it!"
 - **⚙️ Minimale Konfiguration**: Alles, was du brauchst, ist deine `USER_GAME_ID`.
 - **📝 Detailliertes Logging**: Jede Aktion wird protokolliert. Du hast volle Kontrolle und Transparenz.

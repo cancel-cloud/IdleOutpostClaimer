@@ -46,7 +46,19 @@ ENDPOINTS = {
     'shovels': '/api/v2/project/256000/free/item/com.rockbite.zombieoutpost.webshop.dailyshovels',
     'tickets': '/api/v2/project/256000/free/item/com.rockbite.zombieoutpost.webshop.dailyadtickets',
     'legendary': '/api/v2/project/256000/free/item/com.rockbite.zombieoutpost.webshop.weeklylegendarychest',
-    'weekly': '/api/v2/project/256000/free/item/com.rockbite.zombieoutpost.webshop.weeklybonus2'
+    'weekly': '/api/v2/project/256000/free/item/com.rockbite.zombieoutpost.webshop.weeklybonus2',
+    'weekly_gems': '/api/v2/project/256000/free/item/com.rockbite.zombieoutpost.webshop.weeklygems'
+}
+
+DAILY_REWARDS = ('shovels', 'tickets')
+WEEKLY_REWARDS = ('legendary', 'weekly', 'weekly_gems')
+
+REWARD_NAMES = {
+    'shovels': 'Shovels',
+    'tickets': 'Tickets',
+    'legendary': 'Legendary',
+    'weekly': 'Weekly',
+    'weekly_gems': 'Weekly Gems'
 }
 
 
@@ -84,7 +96,7 @@ def setup_session():
 
 
 def claim(session, key: str):
-    item_name = key.capitalize()
+    item_name = REWARD_NAMES.get(key, key.capitalize())
     url = BASE_STORE + ENDPOINTS[key]
     log(f"Versuche, '{item_name}' zu claimen...")
     resp = session.post(url, json={})
@@ -96,6 +108,16 @@ def claim(session, key: str):
     else:
         log(f"❗ Fehler beim Claimen von '{item_name}'. Status-Code: {resp.status_code}")
         log(f"   Server-Antwort: {resp.text}")
+
+
+def claim_all_rewards(session):
+    log("\n--- Tägliche Belohnungen ---")
+    for key in DAILY_REWARDS:
+        claim(session, key)
+
+    log("\n--- Wöchentliche Belohnungen ---")
+    for key in WEEKLY_REWARDS:
+        claim(session, key)
 
 
 def show_startup_message():
@@ -136,12 +158,6 @@ if __name__ == '__main__':
     # Session initialisieren
     sess = setup_session()
 
-    log("\n--- Tägliche Belohnungen ---")
-    for k in ('shovels', 'tickets'):
-        claim(sess, k)
-
-    log("\n--- Wöchentliche Belohnungen ---")
-    claim(sess, 'legendary')
-    claim(sess, 'weekly')
+    claim_all_rewards(sess)
 
     log("\n🏁 Alle Aktionen abgeschlossen.")

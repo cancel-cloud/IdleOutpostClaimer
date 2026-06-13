@@ -8,6 +8,7 @@ Ein einfaches Tool, um automatisch tägliche und wöchentliche Belohnungen im Sp
   - **Täglich**: Schaufeln (`Shovels`)
   - **Täglich**: Werbe-Tickets (`Ad Tickets`)
   - **Wöchentlich**: Legendäre Kiste (`Legendary Chest`)
+  - **Wöchentlich**: 100 kostenlose Gems (`100 Free Gems`)
 - **Container-basiert**: Läuft in einem isolierten Docker-Container. Einmal eingerichtet, läuft es von selbst.
 - **Einfache Konfiguration**: Benötigt nur deine `USER_GAME_ID` als Umgebungsvariable.
 - **Logging**: Erstellt eine Log-Datei, damit du alle Aktionen nachverfolgen kannst.
