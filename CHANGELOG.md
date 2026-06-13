@@ -7,3 +7,4 @@
 - Centralized the daily and weekly reward claim sequence so new rewards are covered by tests.
 - Added regression tests for the weekly gems endpoint and scheduled claim order.
 - Updated the README reward lists to document the new weekly free gems claim.
+- Updated the release workflow to honor manual version bumps without creating an extra patch release.

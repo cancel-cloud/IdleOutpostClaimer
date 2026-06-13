@@ -115,10 +115,14 @@ jobs:
         run: |
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
-          git add version.py
-          git commit -m "Bump version to v${{ steps.new_version.outputs.new_version }}" || echo "No changes to commit"
-          git pull --rebase origin main
-          git push
+          git add version.py CHANGELOG.md
+          if git diff --cached --quiet; then
+            echo "No version or changelog changes to commit"
+          else
+            git commit -m "Bump version to v${{ steps.new_version.outputs.new_version }} [skip ci]"
+            git pull --rebase origin main
+            git push
+          fi
 
       - name: Create Git Tag
         run: |
